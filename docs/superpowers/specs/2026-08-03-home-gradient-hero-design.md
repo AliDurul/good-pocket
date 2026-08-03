@@ -28,7 +28,7 @@ Three decisions were settled before design:
    - `src/app/login.tsx:144` — `bg-[#917400]`
    - `src/app/register.tsx:142` — `bg-[#022e1f]`
    - `src/app/location-picker.tsx:109,131,144` — `#022e1f`
-   - `src/components/SplashScreen.tsx:44` — `bg-[#022e1f]`
+   - `src/components/SplashScreen.tsx:42` — `bg-[#022e1f]`
 
    These will remain forest-green until they are separately retinted; that retint
    is deferred, not in scope here.
