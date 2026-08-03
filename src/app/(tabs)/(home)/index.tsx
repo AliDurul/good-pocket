@@ -7,7 +7,7 @@ import { OrderAgainCard } from '@/features/home/components/OrderAgainCard';
 import { useFlashSale, useLastOrder, useLoyalty } from '@/features/home/stubs';
 import { authClient } from '@/lib/auth-client';
 import { useRouter } from 'expo-router';
-import { ScrollView } from 'react-native';
+import { Alert, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 function greetingFor(date: Date): string {
@@ -30,6 +30,13 @@ export default function HomePage() {
   const { data: flashSale } = useFlashSale();
   const { data: lastOrder } = useLastOrder();
 
+  const handleSignOut = () => {
+    Alert.alert('Sign out', 'Are you sure you want to sign out?', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Sign out', style: 'destructive', onPress: () => { void authClient.signOut(); } },
+    ]);
+  };
+
   return (
     <SafeAreaView edges={['top']} className="flex-1 bg-background">
       <ScrollView
@@ -40,8 +47,8 @@ export default function HomePage() {
           greeting={greetingFor(new Date())}
           name={displayName}
           initial={initial}
-          hasUnread
-          onPressBell={() => router.push('/modal')}
+          hasUnread={false}
+          onPressAvatar={handleSignOut}
         />
 
         {loyalty ? <LoyaltyHeroCard summary={loyalty} /> : null}
