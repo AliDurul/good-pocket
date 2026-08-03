@@ -82,18 +82,40 @@ the existing `useFonts()` call in `src/app/_layout.tsx` (do not add a second cal
 Expose in `@theme inline` as `--font-display` (Playfair) and `--font-sans` (Poppins),
 giving `font-display` and `font-sans` utilities. `SpaceMono` and `FontAwesome.font` stay.
 
-### Dependencies
+### Gradients
 
-- **`expo-linear-gradient`** — new install. Required for the hero card, the tier
-  progress fill, and the promo tile.
-- **`react-native-svg`** — already a dependency at 15.15.3. Its `RadialGradient` renders
-  the gold glow in the hero's top-right corner, which `expo-linear-gradient` cannot do.
-- **`@shopify/flash-list`** — deliberately not added. The repo convention prefers it for
-  large lists, but the featured row is roughly six items and horizontal, so a plain
-  horizontal `ScrollView` is the simpler correct choice.
+Gradients use React Native's CSS gradient support via the `experimental_backgroundImage`
+style property, per `.agents/skills/building-native-ui/references/gradients.md`, which
+states plainly: *"Do NOT use `expo-linear-gradient` — use CSS gradients instead."*
 
-CSS `linear-gradient(150deg, …)` maps to `expo-linear-gradient` as approximately
-`start={{ x: 0.15, y: 0 }} end={{ x: 0.85, y: 1 }}`, tuned visually against the mockup.
+This requires the New Architecture. Expo SDK 55 / RN 0.83 enables it by default and
+`app.json` contains no opt-out, so the requirement is met.
+
+The practical benefit is that gradient strings transfer verbatim from the design HTML —
+no library, no new dependency, no angle conversion:
+
+| Element | Value |
+|---|---|
+| Hero surface | `linear-gradient(150deg, #4A1C0A 0%, #7A3416 100%)` |
+| Hero glow | `radial-gradient(circle, rgba(201,148,58,0.4) 0%, transparent 70%)` |
+| Progress fill | `linear-gradient(90deg, #C9943A 0%, #F2C879 100%)` |
+| Promo tile | `linear-gradient(135deg, #C9943A 0%, #E7B45F 100%)` |
+| Image placeholder | `repeating-linear-gradient(45deg, …)` — see note below |
+
+No new dependencies are added.
+
+- **`expo-linear-gradient`** — explicitly *not* installed, per the skill above.
+- **`react-native-svg`** — already present at 15.15.3, but no longer needed for the glow
+  now that `radial-gradient` is available. Left unused by this work.
+- **`@shopify/flash-list`** — not added. The repo convention prefers it for large lists,
+  but the featured row is roughly six items and horizontal, so a plain horizontal
+  `ScrollView` is the simpler correct choice.
+
+**Placeholder caveat:** `repeating-linear-gradient` is not listed among the supported CSS
+gradient functions in the reference. The striped product placeholder therefore falls back
+to a flat `--muted` (`#EFE6D8`) fill with the `weightLabel` chip on top. If a spike shows
+`repeating-linear-gradient` renders correctly, the stripes can be restored; the flat fill
+is the committed behaviour.
 
 ## Structure
 
