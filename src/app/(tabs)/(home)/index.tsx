@@ -24,7 +24,7 @@ export default function HomePage() {
   // The mockup's "Sarah" is demo content; the real name comes from the session.
   const fullName = session?.user?.name?.trim();
   const displayName = fullName && fullName.length > 0 ? fullName.split(' ')[0] : 'there';
-  const initial = (fullName ?? 'G').charAt(0).toUpperCase();
+  const initial = (fullName || 'G').charAt(0).toUpperCase();
 
   const { data: loyalty } = useLoyalty();
   const { data: flashSale } = useFlashSale();
