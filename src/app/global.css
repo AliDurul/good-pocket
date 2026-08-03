@@ -15,80 +15,97 @@
                            wins on web. Ignored on native (no DOM). */
 @layer theme {
   :root {
-/* ==========================================================================
-     LIGHT MODE (Cream Background, Forest Green Details, Gold Accents)
-     ========================================================================== */
-  --background: 249 245 235;         /* Cream (#F9F5EB) */
-  --foreground: 4 63 39;             /* Forest Green (#043F27) */
+    /* ==========================================================================
+       LIGHT MODE — design 1a "Gradient hero · classic & rich"
+       Ivory ground, espresso ink, warm gold accent, deep brown for weight.
+       ========================================================================== */
+    --background: 250 247 242;          /* #FAF7F2 Ivory */
+    --foreground: 44 20 8;              /* #2C1408 Espresso */
 
-  --primary: 212 175 55;             /* Gold (#D4AF37) */
-  --primary-foreground: 4 63 39;      /* Forest Green (Optimized for 5.7:1 WCAG AA contrast) */
+    --primary: 201 148 58;              /* #C9943A Warm gold */
+    --primary-foreground: 58 22 8;      /* #3A1608 Dark brown on gold */
 
-  --secondary: 4 63 39;              /* Forest Green (#043F27) */
-  --secondary-foreground: 249 245 235;/* Cream (#F9F5EB) */
+    --secondary: 74 28 10;              /* #4A1C0A Deep brown */
+    --secondary-foreground: 250 247 242;/* #FAF7F2 Ivory on brown */
 
-  --card: 255 255 255;               /* Pure White */
-  --card-foreground: 4 63 39;        /* Forest Green (#043F27) */
+    --card: 255 255 255;                /* #FFFFFF */
+    --card-foreground: 44 20 8;         /* #2C1408 */
 
-  --popover: 255 255 255;            /* Pure White */
-  --popover-foreground: 4 63 39;     /* Forest Green (#043F27) */
+    --popover: 255 255 255;             /* #FFFFFF */
+    --popover-foreground: 44 20 8;      /* #2C1408 */
 
-  --muted: 238 231 214;              /* Darker Cream (Tinted background) */
-  --muted-foreground: 85 105 95;     /* Desaturated Green (For subtle text) */
+    --muted: 239 230 216;               /* #EFE6D8 Tinted fill */
+    --muted-foreground: 122 85 64;      /* #7A5540 Taupe */
 
-  --accent: 238 231 214;             /* Darker Cream */
-  --accent-foreground: 4 63 39;      /* Forest Green (#043F27) */
+    --accent: 239 230 216;              /* #EFE6D8 */
+    --accent-foreground: 44 20 8;       /* #2C1408 */
 
-  --destructive: 197 49 49;          /* Accessible Deep Red */
-  --destructive-foreground: 255 255 255; /* White */
+    --destructive: 197 49 49;           /* Accessible deep red */
+    --destructive-foreground: 255 255 255;
 
-  --border: 215 205 185;             /* Muted Cream-Gray */
-  --input: 215 205 185;              /* Muted Cream-Gray */
-  --ring: 212 175 55;                /* Gold (#D4AF37) */
+    --border: 234 223 206;              /* #EADFCE Hairline */
+    --input: 234 223 206;               /* #EADFCE */
+    --ring: 201 148 58;                 /* #C9943A */
+
+    /* ── Brand extensions — colors the semantic set has no slot for ────── */
+    --brand-brown-deep: 74 28 10;       /* #4A1C0A hero gradient 0%   */
+    --brand-brown-rust: 122 52 22;      /* #7A3416 hero gradient 100% */
+    --brand-gold-light: 242 200 121;    /* #F2C879 hero numerals      */
+    --success: 74 124 89;               /* #4A7C59 countdown chip     */
+    --success-foreground: 255 255 255;
   }
 
   @media (prefers-color-scheme: dark) {
     :root {
-   /* ==========================================================================
-     DARK MODE (Inverted: Forest Green Background, Cream Text, Vibrant Gold)
-     ========================================================================== */
-  --background: 4 45 28;             /* Deepened Forest Green (Ensures UI depth) */
-  --foreground: 249 245 235;         /* Cream (#F9F5EB) */
+      /* ==========================================================================
+         DARK MODE — derived from the same brown system. Not a delivered feature;
+         RootLayoutNav pins colorMode to 'light'. Present so the app stays
+         coherent if dark mode is ever enabled.
+         ========================================================================== */
+      --background: 26 14 7;            /* #1A0E07 Near-black espresso */
+      --foreground: 250 247 242;        /* #FAF7F2 Ivory */
 
-  --primary: 230 195 85;             /* Brightened Gold (Boosts visibility on dark backdrops) */
-  --primary-foreground: 4 45 28;     /* Deep Forest Green (Ensures crisp contrast) */
+      --primary: 224 174 84;            /* #E0AE54 Brightened gold */
+      --primary-foreground: 26 14 7;    /* #1A0E07 */
 
-  --secondary: 20 80 50;             /* Lighter Forest Green (For element container separation) */
-  --secondary-foreground: 249 245 235;/* Cream (#F9F5EB) */
+      --secondary: 92 40 18;            /* #5C2812 Lifted brown */
+      --secondary-foreground: 250 247 242;
 
-  --card: 6 54 34;                   /* Slightly lighter Green container */
-  --card-foreground: 249 245 235;    /* Cream (#F9F5EB) */
+      --card: 45 25 14;                 /* #2D190E Raised surface */
+      --card-foreground: 250 247 242;
 
-  --popover: 6 54 34;                /* Slightly lighter Green container */
-  --popover-foreground: 249 245 235; /* Cream (#F9F5EB) */
+      --popover: 45 25 14;              /* #2D190E */
+      --popover-foreground: 250 247 242;
 
-  --muted: 12 65 42;                 /* Mid-tone Green */
-  --muted-foreground: 180 195 185;   /* Soft Sage Gray-Green */
+      --muted: 58 33 19;                /* #3A2113 */
+      --muted-foreground: 196 168 146;  /* #C4A892 Warm gray */
 
-  --accent: 12 65 42;                /* Mid-tone Green */
-  --accent-foreground: 249 245 235;  /* Cream (#F9F5EB) */
+      --accent: 58 33 19;               /* #3A2113 */
+      --accent-foreground: 250 247 242;
 
-  --destructive: 239 68 68;          /* Vibrant Accessible Red */
-  --destructive-foreground: 255 255 255; /* White */
+      --destructive: 239 68 68;
+      --destructive-foreground: 255 255 255;
 
-  --border: 15 75 48;                /* Subtle Dark Green Border */
-  --input: 15 75 48;                 /* Subtle Dark Green Input Field */
-  --ring: 230 195 85;                /* Brightened Gold */
+      --border: 66 40 24;               /* #422818 */
+      --input: 66 40 24;                /* #422818 */
+      --ring: 224 174 84;               /* #E0AE54 */
+
+      --brand-brown-deep: 58 22 8;      /* #3A1608 */
+      --brand-brown-rust: 92 40 18;     /* #5C2812 */
+      --brand-gold-light: 242 200 121;  /* #F2C879 */
+      --success: 90 146 107;            /* #5A926B */
+      --success-foreground: 255 255 255;
     }
   }
 }
 
-/* ─── Tailwind v4 color utilities ─────────────────────────────────
-   bg-primary, text-foreground, border-border, etc. */
+/* ─── Tailwind v4 utilities ───────────────────────────────────────
+   bg-primary, text-foreground, border-border, font-display, etc. */
 @theme inline {
   --color-primary: rgb(var(--primary));
   --color-primary-foreground: rgb(var(--primary-foreground));
   --color-card: rgb(var(--card));
+  --color-card-foreground: rgb(var(--card-foreground));
   --color-secondary: rgb(var(--secondary));
   --color-secondary-foreground: rgb(var(--secondary-foreground));
   --color-background: rgb(var(--background));
@@ -97,10 +114,28 @@
   --color-muted: rgb(var(--muted));
   --color-muted-foreground: rgb(var(--muted-foreground));
   --color-destructive: rgb(var(--destructive));
+  --color-destructive-foreground: rgb(var(--destructive-foreground));
   --color-foreground: rgb(var(--foreground));
   --color-border: rgb(var(--border));
   --color-input: rgb(var(--input));
   --color-ring: rgb(var(--ring));
   --color-accent: rgb(var(--accent));
   --color-accent-foreground: rgb(var(--accent-foreground));
+
+  --color-brand-brown-deep: rgb(var(--brand-brown-deep));
+  --color-brand-brown-rust: rgb(var(--brand-brown-rust));
+  --color-brand-gold-light: rgb(var(--brand-gold-light));
+  --color-success: rgb(var(--success));
+  --color-success-foreground: rgb(var(--success-foreground));
+
+  /* React Native cannot synthesize weights from one family — each weight is
+     its own loaded family, so each gets its own utility. Names deliberately
+     avoid `font-medium`/`font-semibold`/`font-bold`, which are Tailwind's
+     font-weight utilities. */
+  --font-body: "Poppins_400Regular";
+  --font-body-medium: "Poppins_500Medium";
+  --font-body-semibold: "Poppins_600SemiBold";
+  --font-body-bold: "Poppins_700Bold";
+  --font-display: "PlayfairDisplay_700Bold";
+  --font-display-black: "PlayfairDisplay_800ExtraBold";
 }

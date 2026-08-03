@@ -16,6 +16,8 @@
   },
   "dependencies": {
     "@better-auth/expo": "^1.6.14",
+    "@expo-google-fonts/playfair-display": "^0.4.2",
+    "@expo-google-fonts/poppins": "^0.4.1",
     "@expo/html-elements": "^0.12.5",
     "@expo/vector-icons": "^15.0.2",
     "@gluestack-ui/core": "^5.0.0-alpha.0",
