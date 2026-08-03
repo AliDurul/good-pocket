@@ -18,7 +18,7 @@ function SkeletonRow() {
       {[0, 1, 2].map((key) => (
         <Box
           key={key}
-          className="h-[168px] w-[122px] rounded-2xl border border-border bg-muted"
+          className="h-[183px] w-[122px] rounded-2xl border border-border bg-muted"
         />
       ))}
     </HStack>
