@@ -1,18 +1,11 @@
 import { Box } from '@/components/ui/box';
 import { HStack } from '@/components/ui/hstack';
 import { Text } from '@/components/ui/text';
+import { progressPercent } from '../loyalty';
 import type { LoyaltySummary } from '../types';
 
 interface LoyaltyHeroCardProps {
   summary: LoyaltySummary;
-}
-
-/** Share of the way to the next tier, clamped to 0–100 and floored at a
- *  visible sliver so a customer with 0 points still sees the track start. */
-function progressPercent(points: number, pointsToNext: number): number {
-  const total = points + pointsToNext;
-  if (total <= 0) return 100;
-  return Math.min(100, Math.max(2, Math.round((points / total) * 100)));
 }
 
 export function LoyaltyHeroCard({ summary }: LoyaltyHeroCardProps) {
@@ -42,30 +35,30 @@ export function LoyaltyHeroCard({ summary }: LoyaltyHeroCardProps) {
 
       <HStack className="items-center justify-between">
         <Box className="rounded-full bg-primary px-[11px] py-[5px]">
-          <Text className="font-body-bold text-[10px] tracking-[1px] text-primary-foreground">
+          <Text className="font-poppins-bold text-[10px] tracking-[1px] text-primary-foreground">
             {tier}
           </Text>
         </Box>
-        <Text className="font-body text-[11px] text-secondary-foreground/70">
+        <Text className="font-poppins text-[11px] text-secondary-foreground/70">
           Loyalty balance
         </Text>
       </HStack>
 
       <HStack className="mt-4 items-end gap-2">
-        <Text className="font-display-black text-[46px] leading-[46px] text-brand-gold-light">
+        <Text className="font-playfair-black text-[46px] leading-[46px] text-brand-gold-light">
           {points}
         </Text>
-        <Text className="mb-2 font-body-medium text-[13px] text-secondary-foreground/80">
+        <Text className="mb-2 font-poppins-medium text-[13px] text-secondary-foreground/80">
           points
         </Text>
       </HStack>
 
       <Box className="mt-[18px]">
         <HStack className="mb-[7px] justify-between">
-          <Text className="font-body-medium text-[10.5px] text-secondary-foreground/[0.78]">
+          <Text className="font-poppins-medium text-[10.5px] text-secondary-foreground/[0.78]">
             {tier.charAt(0)}{tier.slice(1).toLowerCase()}
           </Text>
-          <Text className="font-body-medium text-[10.5px] text-secondary-foreground/[0.78]">
+          <Text className="font-poppins-medium text-[10.5px] text-secondary-foreground/[0.78]">
             {goalLabel}
           </Text>
         </HStack>

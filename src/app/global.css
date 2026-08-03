@@ -24,6 +24,7 @@
 
     --primary: 201 148 58;              /* #C9943A Warm gold */
     --primary-foreground: 58 22 8;      /* #3A1608 Dark brown on gold */
+    --primary-strong: 138 98 36;        /* #8A6224 gold dark enough for small text on light surfaces */
 
     --secondary: 74 28 10;              /* #4A1C0A Deep brown */
     --secondary-foreground: 250 247 242;/* #FAF7F2 Ivory on brown */
@@ -67,6 +68,7 @@
 
       --primary: 224 174 84;            /* #E0AE54 Brightened gold */
       --primary-foreground: 26 14 7;    /* #1A0E07 */
+      --primary-strong: 224 174 84;     /* #E0AE54 dark surfaces don't have this contrast problem */
 
       --secondary: 92 40 18;            /* #5C2812 Lifted brown */
       --secondary-foreground: 250 247 242;
@@ -100,10 +102,11 @@
 }
 
 /* ─── Tailwind v4 utilities ───────────────────────────────────────
-   bg-primary, text-foreground, border-border, font-display, etc. */
+   bg-primary, text-foreground, border-border, font-playfair, etc. */
 @theme inline {
   --color-primary: rgb(var(--primary));
   --color-primary-foreground: rgb(var(--primary-foreground));
+  --color-primary-strong: rgb(var(--primary-strong));
   --color-card: rgb(var(--card));
   --color-card-foreground: rgb(var(--card-foreground));
   --color-secondary: rgb(var(--secondary));
@@ -130,12 +133,12 @@
 
   /* React Native cannot synthesize weights from one family — each weight is
      its own loaded family, so each gets its own utility. Names deliberately
-     avoid `font-medium`/`font-semibold`/`font-bold`, which are Tailwind's
-     font-weight utilities. */
-  --font-body: "Poppins_400Regular";
-  --font-body-medium: "Poppins_500Medium";
-  --font-body-semibold: "Poppins_600SemiBold";
-  --font-body-bold: "Poppins_700Bold";
-  --font-display: "PlayfairDisplay_700Bold";
-  --font-display-black: "PlayfairDisplay_800ExtraBold";
+     avoid both Tailwind's `font-medium`/`font-semibold`/`font-bold` weight
+     utilities AND gluestack's own `font-body`/`font-heading` base classes. */
+  --font-poppins: "Poppins_400Regular";
+  --font-poppins-medium: "Poppins_500Medium";
+  --font-poppins-semibold: "Poppins_600SemiBold";
+  --font-poppins-bold: "Poppins_700Bold";
+  --font-playfair: "PlayfairDisplay_700Bold";
+  --font-playfair-black: "PlayfairDisplay_800ExtraBold";
 }

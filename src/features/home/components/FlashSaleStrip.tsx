@@ -28,22 +28,22 @@ export function FlashSaleStrip({ sale, onPress }: FlashSaleStripProps) {
               'linear-gradient(135deg, #C9943A 0%, #E7B45F 100%)',
           }}
         >
-          <Text className="font-display-black text-[20px] text-primary-foreground">
+          <Text className="font-playfair-black text-[20px] text-primary-foreground">
             {sale.badge}
           </Text>
         </Box>
 
         <VStack className="flex-1">
-          <Text className="font-body-semibold text-[13px] text-foreground">
+          <Text className="font-poppins-semibold text-[13px] text-foreground">
             {sale.title}
           </Text>
-          <Text className="mt-0.5 font-body text-[11px] text-muted-foreground">
+          <Text className="mt-0.5 font-poppins text-[11px] text-muted-foreground">
             {sale.subtitle}
           </Text>
         </VStack>
 
         <Box className="rounded-lg bg-success px-[9px] py-[5px]">
-          <Text className="font-body-semibold text-[11px] text-success-foreground">
+          <Text className="font-poppins-semibold text-[11px] text-success-foreground">
             {label}
           </Text>
         </Box>

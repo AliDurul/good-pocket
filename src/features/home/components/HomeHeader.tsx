@@ -26,8 +26,8 @@ export function HomeHeader({
   return (
     <HStack className="items-center justify-between px-4 pb-3 pt-2">
       <VStack>
-        <Text className="font-body text-[11px] text-muted-foreground">{greeting}</Text>
-        <Text className="font-body-semibold text-[16px] text-foreground">{name} 👋</Text>
+        <Text className="font-poppins text-[11px] text-muted-foreground">{greeting}</Text>
+        <Text className="font-poppins-semibold text-[16px] text-foreground">{name} 👋</Text>
       </VStack>
 
       <HStack className="items-center gap-3">
@@ -51,7 +51,7 @@ export function HomeHeader({
           accessibilityLabel="Account"
           className="h-[38px] w-[38px] items-center justify-center rounded-full bg-secondary"
         >
-          <Text className="font-body-semibold text-[16px] text-primary">{initial}</Text>
+          <Text className="font-poppins-semibold text-[16px] text-primary">{initial}</Text>
         </Pressable>
       </HStack>
     </HStack>

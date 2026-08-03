@@ -11,10 +11,10 @@ interface SectionHeaderProps {
 export function SectionHeader({ title, actionLabel, onPressAction }: SectionHeaderProps) {
   return (
     <HStack className="items-baseline justify-between px-4 pb-2.5 pt-[18px]">
-      <Text className="font-display text-[16px] text-foreground">{title}</Text>
+      <Text className="font-playfair text-[16px] text-foreground">{title}</Text>
       {actionLabel ? (
         <Pressable onPress={onPressAction} accessibilityRole="button">
-          <Text className="font-body-medium text-[11px] text-primary">{actionLabel}</Text>
+          <Text className="font-poppins-medium text-[11px] text-primary-strong">{actionLabel}</Text>
         </Pressable>
       ) : null}
     </HStack>

@@ -36,7 +36,7 @@ export function ProductCard({ product, onPress, onAdd }: ProductCardProps) {
       ) : (
         <Box className="h-[84px] w-full items-center justify-center bg-muted">
           <Box className="rounded bg-background/80 px-[5px] py-0.5">
-            <Text className="font-body text-[8px] text-muted-foreground">
+            <Text className="font-poppins text-[8px] text-muted-foreground">
               {variant?.weightLabel ?? product.name}
             </Text>
           </Box>
@@ -46,23 +46,23 @@ export function ProductCard({ product, onPress, onAdd }: ProductCardProps) {
       <VStack className="px-2.5 pb-[11px] pt-[9px]">
         <Text
           numberOfLines={2}
-          className="font-body-semibold text-[12px] leading-[14px] text-foreground"
+          className="font-poppins-semibold text-[12px] leading-[14px] text-foreground"
         >
           {product.name}
         </Text>
 
         {variant ? (
-          <Text className="mt-0.5 font-body text-[10px] text-muted-foreground">
+          <Text className="mt-0.5 font-poppins text-[10px] text-muted-foreground">
             {formatFromPrice(variant.price)}
           </Text>
         ) : (
-          <Text className="mt-0.5 font-body text-[10px] text-muted-foreground">
+          <Text className="mt-0.5 font-poppins text-[10px] text-muted-foreground">
             Unavailable
           </Text>
         )}
 
         <HStack className="mt-[9px] items-center justify-between">
-          <Text className="font-body-semibold text-[11px] text-primary">
+          <Text className="font-poppins-semibold text-[11px] text-primary-strong">
             {variant ? formatPoints(variant.earnValue) : ''}
           </Text>
 
@@ -76,7 +76,7 @@ export function ProductCard({ product, onPress, onAdd }: ProductCardProps) {
               accessibilityLabel={`Add ${product.name} to basket`}
               className="h-[26px] w-[26px] items-center justify-center rounded-lg bg-secondary"
             >
-              <Text className="font-body-semibold text-[17px] leading-[17px] text-primary">
+              <Text className="font-poppins-semibold text-[17px] leading-[17px] text-primary">
                 +
               </Text>
             </Pressable>

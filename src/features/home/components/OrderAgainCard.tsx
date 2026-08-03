@@ -32,12 +32,12 @@ export function OrderAgainCard({ order, onReorder }: OrderAgainCardProps) {
         )}
 
         <VStack className="flex-1">
-          <Text className="font-body-semibold text-[12.5px] text-foreground">
+          <Text className="font-poppins-semibold text-[12.5px] text-foreground">
             Last order · {format(order.placedAt, 'd MMM')}
           </Text>
           <Text
             numberOfLines={1}
-            className="mt-px font-body text-[10.5px] text-muted-foreground"
+            className="mt-px font-poppins text-[10.5px] text-muted-foreground"
           >
             {order.summary}
           </Text>
@@ -49,7 +49,7 @@ export function OrderAgainCard({ order, onReorder }: OrderAgainCardProps) {
           accessibilityLabel="Reorder"
           className="rounded-full border-[1.5px] border-primary px-[13px] py-1.5"
         >
-          <Text className="font-body-semibold text-[11px] text-secondary">Reorder</Text>
+          <Text className="font-poppins-semibold text-[11px] text-secondary">Reorder</Text>
         </Pressable>
       </HStack>
     </Box>
