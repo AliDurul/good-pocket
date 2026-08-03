@@ -1,4 +1,3 @@
-/// <reference types="@jest/globals" />
 import { computeRemaining, formatRemaining } from './countdown';
 
 describe('computeRemaining', () => {
