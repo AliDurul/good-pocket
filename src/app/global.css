@@ -1,0 +1,106 @@
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css";
+@import "nativewind/theme";
+
+/* ─── Theme: design tokens (light / dark) ─────────────────────────
+   Three selectors, two purposes:
+   1. :root              — light defaults (all platforms)
+   2. @media dark :root  — dark defaults; nativewind converts this to
+                           Appearance.getColorScheme() on native.
+                           On web it still fires based on OS preference.
+   3. :root.dark / :root.light — specificity (0,2,0), beats the media
+                           query (0,1,0) within the same layer, so the
+                           GluestackUIProvider class-based toggle always
+                           wins on web. Ignored on native (no DOM). */
+@layer theme {
+  :root {
+/* ==========================================================================
+     LIGHT MODE (Cream Background, Forest Green Details, Gold Accents)
+     ========================================================================== */
+  --background: 249 245 235;         /* Cream (#F9F5EB) */
+  --foreground: 4 63 39;             /* Forest Green (#043F27) */
+
+  --primary: 212 175 55;             /* Gold (#D4AF37) */
+  --primary-foreground: 4 63 39;      /* Forest Green (Optimized for 5.7:1 WCAG AA contrast) */
+
+  --secondary: 4 63 39;              /* Forest Green (#043F27) */
+  --secondary-foreground: 249 245 235;/* Cream (#F9F5EB) */
+
+  --card: 255 255 255;               /* Pure White */
+  --card-foreground: 4 63 39;        /* Forest Green (#043F27) */
+
+  --popover: 255 255 255;            /* Pure White */
+  --popover-foreground: 4 63 39;     /* Forest Green (#043F27) */
+
+  --muted: 238 231 214;              /* Darker Cream (Tinted background) */
+  --muted-foreground: 85 105 95;     /* Desaturated Green (For subtle text) */
+
+  --accent: 238 231 214;             /* Darker Cream */
+  --accent-foreground: 4 63 39;      /* Forest Green (#043F27) */
+
+  --destructive: 197 49 49;          /* Accessible Deep Red */
+  --destructive-foreground: 255 255 255; /* White */
+
+  --border: 215 205 185;             /* Muted Cream-Gray */
+  --input: 215 205 185;              /* Muted Cream-Gray */
+  --ring: 212 175 55;                /* Gold (#D4AF37) */
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+   /* ==========================================================================
+     DARK MODE (Inverted: Forest Green Background, Cream Text, Vibrant Gold)
+     ========================================================================== */
+  --background: 4 45 28;             /* Deepened Forest Green (Ensures UI depth) */
+  --foreground: 249 245 235;         /* Cream (#F9F5EB) */
+
+  --primary: 230 195 85;             /* Brightened Gold (Boosts visibility on dark backdrops) */
+  --primary-foreground: 4 45 28;     /* Deep Forest Green (Ensures crisp contrast) */
+
+  --secondary: 20 80 50;             /* Lighter Forest Green (For element container separation) */
+  --secondary-foreground: 249 245 235;/* Cream (#F9F5EB) */
+
+  --card: 6 54 34;                   /* Slightly lighter Green container */
+  --card-foreground: 249 245 235;    /* Cream (#F9F5EB) */
+
+  --popover: 6 54 34;                /* Slightly lighter Green container */
+  --popover-foreground: 249 245 235; /* Cream (#F9F5EB) */
+
+  --muted: 12 65 42;                 /* Mid-tone Green */
+  --muted-foreground: 180 195 185;   /* Soft Sage Gray-Green */
+
+  --accent: 12 65 42;                /* Mid-tone Green */
+  --accent-foreground: 249 245 235;  /* Cream (#F9F5EB) */
+
+  --destructive: 239 68 68;          /* Vibrant Accessible Red */
+  --destructive-foreground: 255 255 255; /* White */
+
+  --border: 15 75 48;                /* Subtle Dark Green Border */
+  --input: 15 75 48;                 /* Subtle Dark Green Input Field */
+  --ring: 230 195 85;                /* Brightened Gold */
+    }
+  }
+}
+
+/* ─── Tailwind v4 color utilities ─────────────────────────────────
+   bg-primary, text-foreground, border-border, etc. */
+@theme inline {
+  --color-primary: rgb(var(--primary));
+  --color-primary-foreground: rgb(var(--primary-foreground));
+  --color-card: rgb(var(--card));
+  --color-secondary: rgb(var(--secondary));
+  --color-secondary-foreground: rgb(var(--secondary-foreground));
+  --color-background: rgb(var(--background));
+  --color-popover: rgb(var(--popover));
+  --color-popover-foreground: rgb(var(--popover-foreground));
+  --color-muted: rgb(var(--muted));
+  --color-muted-foreground: rgb(var(--muted-foreground));
+  --color-destructive: rgb(var(--destructive));
+  --color-foreground: rgb(var(--foreground));
+  --color-border: rgb(var(--border));
+  --color-input: rgb(var(--input));
+  --color-ring: rgb(var(--ring));
+  --color-accent: rgb(var(--accent));
+  --color-accent-foreground: rgb(var(--accent-foreground));
+}
