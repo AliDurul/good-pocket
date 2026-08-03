@@ -7,8 +7,12 @@ import { ChartBarStacked, EditIcon, Home } from 'lucide-react-native'
 export default function TabsLayout() {
     return (
         <Tabs screenOptions={{
-            tabBarActiveTintColor: 'tomato',
-            tabBarInactiveTintColor: 'gray',
+            tabBarActiveTintColor: '#C9943A',
+            tabBarInactiveTintColor: '#7A5540',
+            tabBarStyle: {
+                backgroundColor: '#FAF7F2',
+                borderTopColor: '#EADFCE',
+            },
         }}>
             <Tabs.Screen
                 name="(home)"
