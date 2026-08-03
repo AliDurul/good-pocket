@@ -2,6 +2,7 @@
   "extends": "expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
+    "types": ["@jest/globals"],
     "paths": {
       "@/*": [
         "./src/*"
@@ -17,6 +18,7 @@
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
     "nativewind-env.d.ts",
-    "react-native-css-env.d.ts"
+    "react-native-css-env.d.ts",
+    "jest.d.ts"
   ]
 }
