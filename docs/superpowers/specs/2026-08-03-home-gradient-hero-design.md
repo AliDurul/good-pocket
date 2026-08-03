@@ -20,8 +20,18 @@ Three decisions were settled before design:
 1. **Palette scope — retheme globally.** The app's current tokens are Cream + Forest
    Green + Gold. Design 1a is Ivory + deep Brown + warm Gold. Rather than run two
    palettes, the light-mode tokens in `src/app/global.css` are rewritten to 1a's
-   system. Login, register, and onboarding inherit it because they already consume
-   `bg-background` / `text-foreground`.
+   system. Onboarding inherits the retheme because it consumes `bg-background` /
+   `text-foreground`. Login, register, location-picker, and the splash screen do
+   **not** inherit it — they hardcode `#022e1f` (forest green) and `#917400` (gold)
+   directly rather than consuming the semantic tokens, at these call sites:
+   - `src/app/login.tsx:69` — `bg-[#022e1f]`
+   - `src/app/login.tsx:144` — `bg-[#917400]`
+   - `src/app/register.tsx:142` — `bg-[#022e1f]`
+   - `src/app/location-picker.tsx:109,131,144` — `#022e1f`
+   - `src/components/SplashScreen.tsx:44` — `bg-[#022e1f]`
+
+   These will remain forest-green until they are separately retinted; that retint
+   is deferred, not in scope here.
 2. **Data — real products, typed stubs elsewhere.** `useProducts()` exists and its
    variants carry `price` and `earnValue`, which map onto the mockup's `from K185`
    and `+18 pts`. Loyalty, flash sale, and last order have no endpoints, so they are
@@ -197,14 +207,18 @@ no tab structure changes.
 
 ## Out of scope
 
-- **Login, register, and onboarding redesign.** These screens will visibly reskin as a
-  side effect of the global retheme and will be coherent, but they are not designed to
-  frames 1f–1i. That is separate work.
+- **Login, register, and onboarding redesign.** Onboarding visibly reskins as a side
+  effect of the global retheme; login and register do not, since they hardcode their
+  own colours (see Decision 1). None of the three are designed to frames 1f–1i. That
+  is separate work.
 - **Real loyalty, flash-sale, and order endpoints.** Backend does not expose them.
 - **"See all →", the add-to-basket button, and "Reorder" wiring.** Rendered per the
   design and given pressable affordances, but their handlers are left as stubs — basket
   and loyalty-detail destinations do not exist yet.
 - **Dark mode as a delivered feature.** Tokens are defined; the app stays pinned to light.
+- **Retinting login, register, location-picker, and the splash screen.** They hardcode
+  `#022e1f`/`#917400` rather than consuming the semantic tokens (Decision 1) and remain
+  forest-green for now. Follow-up work.
 
 ## Verification
 

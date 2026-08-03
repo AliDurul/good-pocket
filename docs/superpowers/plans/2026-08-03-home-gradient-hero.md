@@ -260,7 +260,12 @@ Expected: exit 0, no errors.
 - [ ] **Step 5: Verify visually**
 
 Run: `npm run android` (dev server must be reachable at the URL in `src/config/env.ts`).
-Expected: the app builds and the login screen renders on the **ivory** background with an espresso heading and a **gold** primary button — no forest green anywhere. Confirm the gold button's label is legible (it is `--primary-foreground` `#3A1608` on `#C9943A`, roughly 7:1).
+Expected: the app builds. The login screen keeps its hardcoded dark-green panel
+(`bg-[#022e1f]`, `src/app/login.tsx:69`) — it does not inherit the retheme, since it
+never consumed `bg-background`/`text-foreground` in the first place. What to verify
+is that the gold primary button (`bg-[#917400]`, `src/app/login.tsx:144`) and its
+label remain legible against that dark-green panel — not that forest green is absent
+from the screen.
 
 - [ ] **Step 6: Commit**
 
