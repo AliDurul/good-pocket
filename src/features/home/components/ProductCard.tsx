@@ -4,6 +4,7 @@ import { Image } from '@/components/ui/image';
 import { Pressable } from '@/components/ui/pressable';
 import { Text } from '@/components/ui/text';
 import { VStack } from '@/components/ui/vstack';
+import type { GestureResponderEvent } from 'react-native';
 import type { IProduct } from '@/types';
 import { formatFromPrice, formatPoints, selectCheapestVariant } from '../variant';
 
@@ -67,7 +68,10 @@ export function ProductCard({ product, onPress, onAdd }: ProductCardProps) {
 
           {variant ? (
             <Pressable
-              onPress={onAdd}
+              onPress={(e: GestureResponderEvent) => {
+                e.stopPropagation();
+                onAdd?.();
+              }}
               accessibilityRole="button"
               accessibilityLabel={`Add ${product.name} to basket`}
               className="h-[26px] w-[26px] items-center justify-center rounded-lg bg-secondary"
