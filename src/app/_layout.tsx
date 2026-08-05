@@ -41,6 +41,21 @@ export {
 
 SplashScreen.preventAutoHideAsync();
 
+/**
+ * React Navigation paints its own `colors.background` behind every screen, and its
+ * default light gray shows through wherever a screen doesn't cover the viewport.
+ * Point it at the app's `--background` token instead so any gap reads as ivory
+ * (or espresso in dark mode) rather than a foreign gray.
+ */
+const NAV_LIGHT_THEME = {
+  ...DefaultTheme,
+  colors: { ...DefaultTheme.colors, background: '#FAF7F2' },
+};
+const NAV_DARK_THEME = {
+  ...DarkTheme,
+  colors: { ...DarkTheme.colors, background: '#1A0E07' },
+};
+
 export default function RootLayout() {
   const [loaded, error] = useFonts({
     SpaceMono: require('../../assets/fonts/SpaceMono-Regular.ttf'),
@@ -92,7 +107,7 @@ function RootLayoutNav() {
   // }, []);
 
   return (
-    <ThemeProvider value={colorMode === 'dark' ? DarkTheme : DefaultTheme}>
+    <ThemeProvider value={colorMode === 'dark' ? NAV_DARK_THEME : NAV_LIGHT_THEME}>
       <GestureHandlerRootView style={{ flex: 1 }}>
         <GluestackUIProvider mode={colorMode}>
 
@@ -105,11 +120,21 @@ function RootLayoutNav() {
                 <Stack.Protected guard={!!session}>
                   <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                   <Stack.Screen name="modal" options={{ presentation: 'modal', headerShown: false, animation: 'slide_from_bottom' }} />
+
+                  {/*
+                    Full-screen so the camera has no tab bar or header over it, and so the
+                    celebration owns the whole viewport. `scan-confirmed` disables the
+                    swipe-back gesture: dismissing it by accident would drop the customer
+                    back onto a live camera aimed at a code that has already been redeemed.
+                  */}
+                  <Stack.Screen name="scanner" options={{ presentation: 'fullScreenModal', headerShown: false, animation: 'slide_from_bottom' }} />
+                  <Stack.Screen name="scan-confirmed" options={{ presentation: 'fullScreenModal', headerShown: false, gestureEnabled: false }} />
                 </Stack.Protected>
 
                 <Stack.Protected guard={!session && onboardingCompleted}>
                   <Stack.Screen name="login" options={{ headerShown: false }} />
                   <Stack.Screen name="register" options={{ headerShown: false }} />
+                  <Stack.Screen name="forgot-password" options={{ headerShown: false }} />
                   <Stack.Screen name="location-picker" options={{ presentation: 'modal', headerShown: false }} />
                 </Stack.Protected>
 

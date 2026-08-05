@@ -1,25 +1,23 @@
 import React from 'react'
-import { Image, Pressable, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
+import { Pressable, ScrollView, KeyboardAvoidingView, Platform } from 'react-native'
 import { Box } from '@/components/ui/box'
-import { Heading } from '@/components/ui/heading'
 import { Text } from '@/components/ui/text'
-import { Input, InputField, InputIcon } from '@/components/ui/input'
-import { Button, ButtonIcon, ButtonSpinner, ButtonText } from '@/components/ui/button'
-import {
-    FormControl,
-    FormControlLabel,
-    FormControlLabelText,
-    FormControlError,
-    FormControlErrorText,
-} from '@/components/ui/form-control'
+import { SafeAreaView } from '@/components/ui/safe-area-view'
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from 'expo-router';
 import { useForm, Controller } from "react-hook-form";
-import { Eye, EyeClosed } from 'lucide-react-native'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { SignInForm, signInSchema } from '@/zod/auth'
 import { useAppToast } from '@/hooks/useAppToast'
+import { AuthButton, AuthField, AuthInput, AuthInputField, BrandMark } from '@/features/auth'
 
+/**
+ * Prefilled dev credentials, kept out of release builds so a shipped app never
+ * opens with someone else's account already typed in.
+ */
+const DEV_DEFAULTS = __DEV__
+    ? { email: 'customer1@gmail.com', password: 'Goodtaste2026' }
+    : { email: '', password: '' }
 
 export default function Login() {
 
@@ -28,12 +26,9 @@ export default function Login() {
     const toast = useAppToast();
 
 
-    const { control, handleSubmit, formState: { errors, isSubmitting } } = useForm<SignInForm>({
+    const { control, handleSubmit, getValues, formState: { errors, isSubmitting } } = useForm<SignInForm>({
         resolver: zodResolver(signInSchema),
-        defaultValues: {
-            email: 'customer1@gmail.com',
-            password: 'Goodtaste2026',
-        }
+        defaultValues: DEV_DEFAULTS,
     });
 
 
@@ -50,8 +45,6 @@ export default function Login() {
                 return;
             }
 
-            // await authClient.getSession();
-            // toast.success('Welcome back!');
             router.replace("/");
         } catch (err) {
             // Transport-level failure (server unreachable) rejects instead of
@@ -61,109 +54,124 @@ export default function Login() {
         }
     };
 
+    const revealLabel = showPass ? 'Hide' : 'Show'
+
     return (
-        <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+        // Headerless stack screen with no tab bar, so both edges are ours to clear.
+        <SafeAreaView edges={['top', 'bottom']} className="flex-1 bg-background">
+            <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
+                <ScrollView
+                    className="bg-background"
+                    contentContainerStyle={{ flexGrow: 1 }}
+                    keyboardShouldPersistTaps="handled"
+                >
+                    <Box className="flex-1 bg-background px-6 py-5">
 
-            <ScrollView contentContainerStyle={{ flexGrow: 1 }} keyboardShouldPersistTaps="handled">
+                        <Box className="my-5.5 items-center">
+                            <BrandMark size="sm" />
+                        </Box>
 
-                <Box className="flex-1 items-center justify-center bg-[#022e1f] px-6 py-12 gap-6">
+                        <Text className="text-center font-playfair text-[26px] leading-8 text-foreground">
+                            Welcome back
+                        </Text>
+                        <Text className="mt-1 text-center font-poppins text-[13px] text-muted-foreground">
+                            Sign in to your account
+                        </Text>
 
-                    <Image
-                        source={{ uri: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80' }}
-                        style={{ width: 200, height: 200, borderRadius: 24 }}
-                        resizeMode="contain"
-                    />
-                    <Heading size="2xl" className="text-center text-secondary-foreground" >Good Taste Club</Heading>
+                        <Box className="mt-6 gap-4">
+                            <AuthField label="Email" error={errors.email?.message}>
+                                <Controller
+                                    name="email"
+                                    control={control}
+                                    render={({ field: { onChange, onBlur, value } }) => (
+                                        <AuthInput isInvalid={!!errors.email}>
+                                            <AuthInputField
+                                                placeholder="you@example.com"
+                                                keyboardType="email-address"
+                                                autoCapitalize="none"
+                                                autoCorrect={false}
+                                                onBlur={onBlur}
+                                                onChangeText={onChange}
+                                                value={value}
+                                            />
+                                        </AuthInput>
+                                    )}
+                                />
+                            </AuthField>
 
-                    <Box className="w-full gap-6">
-                        <FormControl isInvalid={!!errors.email}>
-                            <FormControlLabel>
-                                <FormControlLabelText className={errors.email ? "text-destructive" : "text-secondary-foreground"}>
-                                    Email
-                                </FormControlLabelText>
-                            </FormControlLabel>
-                            <Controller
-                                name="email"
-                                control={control}
-                                render={({ field: { onChange, onBlur, value } }) => (
-                                    <Input className={`bg-secondary-foreground ${errors.email ? "data-[invalid=true]:border-destructive" : ""}`}>
-                                        <InputField
-                                            placeholder="you@example.com"
-                                            keyboardType="email-address"
-                                            autoCapitalize="none"
-                                            autoCorrect={false}
-                                            onBlur={onBlur}
-                                            onChangeText={onChange}
-                                            value={value}
-                                        />
-                                    </Input>
-                                )}
-                            />
-                            <FormControlError>
-                                <FormControlErrorText className='text-base'>{errors.email?.message}</FormControlErrorText>
-                            </FormControlError>
-                        </FormControl>
+                            <AuthField label="Password" error={errors.password?.message}>
+                                <Controller
+                                    name="password"
+                                    control={control}
+                                    render={({ field: { onChange, onBlur, value } }) => (
+                                        <AuthInput isInvalid={!!errors.password}>
+                                            <AuthInputField
+                                                placeholder="••••••••"
+                                                secureTextEntry={!showPass}
+                                                onBlur={onBlur}
+                                                onChangeText={onChange}
+                                                value={value}
+                                            />
+                                            <Pressable
+                                                onPress={() => setShowPass(!showPass)}
+                                                hitSlop={12}
+                                                accessibilityRole="button"
+                                                accessibilityLabel={`${revealLabel} password`}
+                                            >
+                                                <Text className="font-poppins-semibold text-[11px] text-primary">
+                                                    {revealLabel}
+                                                </Text>
+                                            </Pressable>
+                                        </AuthInput>
+                                    )}
+                                />
+                            </AuthField>
+                        </Box>
 
-                        <FormControl isInvalid={!!errors.password}>
-                            <FormControlLabel>
-                                <FormControlLabelText className={errors.password ? "text-destructive" : "text-secondary-foreground"}>
-                                    Password
-                                </FormControlLabelText>
-                            </FormControlLabel>
-                            <Controller
-                                name="password"
-                                control={control}
-                                render={({ field: { onChange, onBlur, value } }) => (
-                                    <Input className={`bg-secondary-foreground ${errors.password ? "data-[invalid=true]:border-destructive" : ""}`}>
-                                        <InputField
-                                            placeholder="••••••••"
-                                            secureTextEntry={!showPass}
-                                            onBlur={onBlur}
-                                            onChangeText={onChange}
-                                            value={value}
-                                        />
-                                        <Button variant='ghost' onPress={() => setShowPass(!showPass)}>
-                                            <ButtonIcon as={showPass ? Eye : EyeClosed} className='text-muted-foreground' />
-                                        </Button>
-                                    </Input>
-                                )}
-                            />
-                            <FormControlError>
-                                <FormControlErrorText className='text-base'>{errors.password?.message}</FormControlErrorText>
-                            </FormControlError>
-                        </FormControl>
-
-                        <Box className="items-end">
-                            <Pressable onPress={() => console.log('Forgot password')}>
-                                <Text size="sm" className="text-secondary-foreground">Forgot password?</Text>
+                        <Box className="mt-3 items-end">
+                            <Pressable
+                                onPress={() =>
+                                    // Carry whatever is already typed so the reset screen can
+                                    // show which address the code went to.
+                                    router.push({
+                                        pathname: '/forgot-password',
+                                        params: { email: getValues('email') ?? '' },
+                                    })
+                                }
+                                hitSlop={8}
+                                accessibilityRole="button"
+                            >
+                                <Text className="font-poppins-medium text-[12px] text-primary">
+                                    Forgot password?
+                                </Text>
                             </Pressable>
                         </Box>
+
+                        <Box className="mt-5">
+                            <AuthButton
+                                label="Sign In"
+                                isLoading={isSubmitting}
+                                isDisabled={isSubmitting}
+                                onPress={handleSubmit(handleSignIn)}
+                            />
+                        </Box>
+
+                        {/* <Box className="flex-1" /> */}
+
+                        <Box className="flex-row items-center justify-center gap-1 pt-3">
+                            <Text className="font-poppins text-[12.5px] text-muted-foreground">
+                                New customer?
+                            </Text>
+                            <Pressable onPress={() => router.push('/register')} hitSlop={8} accessibilityRole="button">
+                                <Text className="font-poppins-semibold text-[12.5px] text-primary">
+                                    Register here
+                                </Text>
+                            </Pressable>
+                        </Box>
+
                     </Box>
-
-                    <Button
-                        className="w-full py-3 bg-[#917400]"
-                        size='lg'
-                        onPress={handleSubmit(handleSignIn)}
-                    >
-                        {isSubmitting ? (
-                            <>
-                                <ButtonSpinner color="white" />
-                                <ButtonText className='text-secondary-foreground text-lg'>Please wait...</ButtonText>
-                            </>
-                        ) : (
-                            <ButtonText className='text-secondary-foreground text-lg'>Sign In</ButtonText>
-                        )}
-                    </Button>
-
-                    <Box className="flex-row items-center gap-1">
-                        <Text size="sm" className="text-secondary-foreground">Don't have an account?</Text>
-                        <Pressable onPress={() => router.push('/register')}>
-                            <Text size="sm" className="text-primary/80 font-medium underline">Register</Text>
-                        </Pressable>
-                    </Box>
-
-                </Box>
-            </ScrollView>
-        </KeyboardAvoidingView>
+                </ScrollView>
+            </KeyboardAvoidingView>
+        </SafeAreaView>
     )
 }

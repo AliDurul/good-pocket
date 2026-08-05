@@ -19,10 +19,10 @@
        LIGHT MODE — design 1a "Gradient hero · classic & rich"
        Ivory ground, espresso ink, warm gold accent, deep brown for weight.
        ========================================================================== */
-    --background: 250 247 242;          /* #FAF7F2 Ivory */
+    --background: 250 247 242;          /* #FAF7F2 Ivory */ 
     --foreground: 44 20 8;              /* #2C1408 Espresso */
 
-    --primary: 201 148 58;              /* #C9943A Warm gold */
+    --primary: 201 148 58;              /* #C9943A Warm gold */ /* B4911C */
     --primary-foreground: 58 22 8;      /* #3A1608 Dark brown on gold */
     --primary-strong: 138 98 36;        /* #8A6224 gold dark enough for small text on light surfaces */
 

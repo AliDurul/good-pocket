@@ -7,8 +7,10 @@ import { OrderAgainCard } from '@/features/home/components/OrderAgainCard';
 import { useFlashSale, useLastOrder, useLoyalty } from '@/features/home/stubs';
 import { authClient } from '@/lib/auth-client';
 import { useRouter } from 'expo-router';
-import { Alert, ScrollView } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { ScrollView } from 'react-native';
+import { SafeAreaView } from '@/components/ui/safe-area-view';
+import { useLoyaltyTiers } from '@/api/queries/loyalty-tier';
+import { useMyCardInfo } from '@/api/queries/users';
 
 function greetingFor(date: Date): string {
   const hour = date.getHours();
@@ -21,24 +23,31 @@ export default function HomePage() {
   const router = useRouter();
   const { data: session } = authClient.useSession();
 
-  // The mockup's "Sarah" is demo content; the real name comes from the session.
   const fullName = session?.user?.name?.trim();
   const displayName = fullName && fullName.length > 0 ? fullName.split(' ')[0] : 'there';
   const initial = (fullName || 'G').charAt(0).toUpperCase();
 
-  const { data: loyalty } = useLoyalty();
+  const loyalty = {
+    tier: 'BRONZE',
+    walletBalance: 180,
+    nextTier: 'SILVER',
+    pointsToNext: 320,
+  };
+
+  const {
+    data: cardInfos,
+    isPending,
+    isError,
+    error,
+    refetch,
+    isRefetching,
+  } = useMyCardInfo();
+
   const { data: flashSale } = useFlashSale();
   const { data: lastOrder } = useLastOrder();
 
-  const handleSignOut = () => {
-    Alert.alert('Sign out', 'Are you sure you want to sign out?', [
-      { text: 'Cancel', style: 'cancel' },
-      { text: 'Sign out', style: 'destructive', onPress: () => { void authClient.signOut(); } },
-    ]);
-  };
-
   return (
-    <SafeAreaView edges={['top']} className="flex-1 bg-background">
+    <SafeAreaView edges={['top']} className="flex-1 bg-background pt-3">
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 8 }}
@@ -48,11 +57,12 @@ export default function HomePage() {
           name={displayName}
           initial={initial}
           hasUnread={false}
-          onPressAvatar={handleSignOut}
+          onPressAvatar={() => router.push('/profile')}
         />
 
+
         {loyalty ? <LoyaltyHeroCard summary={loyalty} /> : null}
-        {flashSale ? <FlashSaleStrip sale={flashSale} /> : null}
+        {/* {flashSale ? <FlashSaleStrip sale={flashSale} /> : null} */}
 
         <FeaturedProducts
           onPressProduct={(product) => router.push(`/products/${product.id}`)}

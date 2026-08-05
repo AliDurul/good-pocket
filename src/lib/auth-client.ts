@@ -22,7 +22,8 @@ export const authClient = createAuthClient({
                 country: { type: "string" },
                 birthday: { type: "string", required: false },
                 town: { type: 'string' },
-                role: { type: "string", required: false }
+                role: { type: "string", required: false },
+                walletBalance: { type: "number", required: false },
             }
         })
     ]

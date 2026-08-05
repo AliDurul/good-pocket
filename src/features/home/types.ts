@@ -1,10 +1,10 @@
-export type LoyaltyTier = 'BRONZE' | 'SILVER' | 'GOLD' | 'PLATINUM';
+// export type LoyaltyTier = 'BRONZE' | 'SILVER' | 'GOLD' | 'PLATINUM';
 
 export interface LoyaltySummary {
-  tier: LoyaltyTier;
-  points: number;
+  tier: string;
+  walletBalance: number;
   /** null once the customer is at the top tier. */
-  nextTier: LoyaltyTier | null;
+  nextTier: string | null;
   /** Points still needed to reach `nextTier`; 0 at the top tier. */
   pointsToNext: number;
 }

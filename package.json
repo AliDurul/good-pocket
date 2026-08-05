@@ -35,6 +35,7 @@
     "date-fns": "^4.1.0",
     "dom-helpers": "^5.2.1",
     "expo": "~55.0.28",
+    "expo-camera": "~55.0.21",
     "expo-constants": "~55.0.7",
     "expo-font": "~55.0.1",
     "expo-glass-effect": "~55.0.11",

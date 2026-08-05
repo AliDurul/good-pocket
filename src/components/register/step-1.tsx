@@ -1,60 +1,54 @@
-import {
-    FormControl,
-    FormControlError,
-    FormControlErrorText,
-    FormControlHelper,
-    FormControlHelperText,
-    FormControlLabel,
-    FormControlLabelText,
-} from '@/components/ui/form-control'
-import {
-    ArrowRight,
-    CalendarDays,
-    ChevronDown,
-    Crosshair,
-    Eye,
-    EyeClosed,
-    Globe,
-    Lock,
-    Mail,
-    Map,
-    MapPin,
-    User,
-} from 'lucide-react-native'
-import { Box } from '@/components/ui/box'
-import { Text } from '@/components/ui/text'
-import { Input, InputField, InputIcon, InputSlot } from '@/components/ui/input'
-import { Button, ButtonIcon, ButtonText } from '@/components/ui/button'
-import { Controller, } from 'react-hook-form'
-import { Pressable, View } from 'react-native'
-import { useState } from 'react'
+import { useState, type Dispatch, type SetStateAction } from 'react'
+import { Pressable } from 'react-native'
 import { useRouter } from 'expo-router'
+import {
+    Controller,
+    type Control,
+    type FieldErrors,
+    type UseFormTrigger,
+    type UseFormWatch,
+} from 'react-hook-form'
+import { Box } from '@/components/ui/box'
+import { HStack } from '@/components/ui/hstack'
+import { Text } from '@/components/ui/text'
+import type { SignUpForm } from '@/zod/auth'
+import { AuthButton, AuthField, AuthInput, AuthInputField } from '@/features/auth'
 
 interface IStep1Props {
-    errors: any;
-    control: any;
-    watch: any;
-    trigger: any;
-    setStep: any;
+    errors: FieldErrors<SignUpForm>
+    control: Control<SignUpForm>
+    watch: UseFormWatch<SignUpForm>
+    trigger: UseFormTrigger<SignUpForm>
+    setStep: Dispatch<SetStateAction<1 | 2>>
 }
 
-function getPasswordStrength(password: string): { label: string; color: string; width: string } {
-    if (!password) return { label: '', color: '', width: 'w-0' }
+const STRENGTH_SEGMENTS = 3
+
+interface Strength {
+    label: string
+    /** How many of the three segments to fill. */
+    filled: number
+    fill: string
+    text: string
+}
+
+function getPasswordStrength(password: string): Strength {
+    if (!password) return { label: '', filled: 0, fill: '', text: '' }
     let score = 0
     if (password.length >= 8) score++
     if (/[A-Z]/.test(password)) score++
     if (/[0-9]/.test(password)) score++
     if (/[^A-Za-z0-9]/.test(password)) score++
-    if (score <= 1) return { label: 'Weak', color: 'bg-destructive', width: 'w-1/3' }
-    if (score <= 2) return { label: 'Medium', color: 'bg-yellow-500', width: 'w-2/3' }
-    return { label: 'Strong', color: 'bg-green-500', width: 'w-full' }
+    if (score <= 1) return { label: 'Weak password', filled: 1, fill: 'bg-destructive', text: 'text-destructive' }
+    if (score <= 2) return { label: 'Medium password', filled: 2, fill: 'bg-primary', text: 'text-primary-strong' }
+    return { label: 'Strong password', filled: 3, fill: 'bg-success', text: 'text-success' }
 }
 
 export default function Step1({ errors, control, watch, trigger, setStep }: IStep1Props) {
 
     const [showPass, setShowPass] = useState(false)
     const [showConfirm, setShowConfirm] = useState(false)
-    const router = useRouter();
+    const router = useRouter()
 
     const passwordValue = watch('password')
     const strength = getPasswordStrength(passwordValue)
@@ -64,54 +58,37 @@ export default function Step1({ errors, control, watch, trigger, setStep }: ISte
         if (valid) setStep(2)
     }
 
+    const revealLabel = (shown: boolean) => (shown ? 'Hide' : 'Show')
 
     return (
-        <Box className="w-full gap-5">
-            {/* Full Name */}
-            <FormControl isInvalid={!!errors.name}>
-                <FormControlLabel>
-                    <FormControlLabelText className={errors.name ? 'text-destructive' : 'text-secondary-foreground'}>
-                        Full Name
-                    </FormControlLabelText>
-                </FormControlLabel>
+        <Box className="w-full gap-[13px]">
+            <AuthField label="Full name" error={errors.name?.message}>
                 <Controller
                     name="name"
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                        <Input className={`bg-secondary-foreground ${errors.name ? 'border-2 border-destructive' : ''}`}>
-                            <InputSlot className="pl-3">
-                                <InputIcon as={User} className="text-muted-foreground" />
-                            </InputSlot>
-                            <InputField
-                                placeholder="Your name.."
+                        <AuthInput height={48} isInvalid={!!errors.name}>
+                            <AuthInputField
+                                placeholder="Sarah Mwansa"
                                 onBlur={onBlur}
                                 onChangeText={onChange}
                                 value={value}
                             />
-                        </Input>
+                        </AuthInput>
                     )}
                 />
-                <FormControlError>
-                    <FormControlErrorText>{errors.name?.message}</FormControlErrorText>
-                </FormControlError>
-            </FormControl>
+            </AuthField>
 
-            {/* Phone */}
-            <FormControl isInvalid={!!errors.phone}>
-                <FormControlLabel>
-                    <FormControlLabelText className={errors.phone ? 'text-destructive' : 'text-secondary-foreground'}>
-                        Phone Number
-                    </FormControlLabelText>
-                </FormControlLabel>
+            <AuthField label="Phone number" error={errors.phone?.message}>
                 <Controller
                     name="phone"
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                        <Input className={`bg-secondary-foreground ${errors.phone ? 'border-2 border-destructive' : ''}`}>
-                            <InputSlot className="pl-3">
-                                <Text size="sm" className="text-muted-foreground font-medium">+260</Text>
-                            </InputSlot>
-                            <InputField
+                        <AuthInput height={48} isInvalid={!!errors.phone}>
+                            {/* Same size + leading as AUTH_INPUT_TEXT so the prefix and the
+                                typed digits sit on one baseline. */}
+                            <Text className="font-poppins-medium text-[14px] leading-[18px] text-muted-foreground">+260</Text>
+                            <AuthInputField
                                 placeholder="97 123 4567"
                                 keyboardType="phone-pad"
                                 maxLength={9}
@@ -119,31 +96,19 @@ export default function Step1({ errors, control, watch, trigger, setStep }: ISte
                                 onChangeText={onChange}
                                 value={value}
                             />
-                        </Input>
+                        </AuthInput>
                     )}
                 />
-                <FormControlError>
-                    <FormControlErrorText>{errors.phone?.message}</FormControlErrorText>
-                </FormControlError>
-            </FormControl>
+            </AuthField>
 
-            {/* Email */}
-            <FormControl isInvalid={!!errors.email}>
-                <FormControlLabel>
-                    <FormControlLabelText className={errors.email ? 'text-destructive' : 'text-secondary-foreground'}>
-                        Email Address
-                    </FormControlLabelText>
-                </FormControlLabel>
+            <AuthField label="Email" error={errors.email?.message}>
                 <Controller
                     name="email"
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                        <Input className={`bg-secondary-foreground ${errors.email ? 'border-2 border-destructive' : ''}`}>
-                            <InputSlot className="pl-3">
-                                <InputIcon as={Mail} className="text-muted-foreground" />
-                            </InputSlot>
-                            <InputField
-                                placeholder="Your email.."
+                        <AuthInput height={48} isInvalid={!!errors.email}>
+                            <AuthInputField
+                                placeholder="you@email.com"
                                 keyboardType="email-address"
                                 autoCapitalize="none"
                                 autoCorrect={false}
@@ -151,96 +116,97 @@ export default function Step1({ errors, control, watch, trigger, setStep }: ISte
                                 onChangeText={onChange}
                                 value={value}
                             />
-                        </Input>
+                        </AuthInput>
                     )}
                 />
-                <FormControlError>
-                    <FormControlErrorText>{errors.email?.message}</FormControlErrorText>
-                </FormControlError>
-            </FormControl>
+            </AuthField>
 
-            {/* Password */}
-            <FormControl isInvalid={!!errors.password}>
-                <FormControlLabel>
-                    <FormControlLabelText className={errors.password ? 'text-destructive' : 'text-secondary-foreground'}>
-                        Password
-                    </FormControlLabelText>
-                </FormControlLabel>
+            <AuthField
+                label="Password"
+                error={errors.password?.message}
+                helper={
+                    passwordValue ? (
+                        <Box>
+                            <HStack className="gap-[5px]">
+                                {Array.from({ length: STRENGTH_SEGMENTS }, (_, i) => (
+                                    <Box
+                                        key={i}
+                                        className={`h-1 flex-1 rounded-[2px] ${i < strength.filled ? strength.fill : 'bg-border'}`}
+                                    />
+                                ))}
+                            </HStack>
+                            <Text className={`mt-[5px] font-poppins-medium text-[10px] ${strength.text}`}>
+                                {strength.label}
+                            </Text>
+                        </Box>
+                    ) : null
+                }
+            >
                 <Controller
                     name="password"
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                        <Input className={`bg-secondary-foreground ${errors.password ? 'border-2 border-destructive' : ''}`}>
-                            <InputSlot className="pl-3">
-                                <InputIcon as={Lock} className="text-muted-foreground" />
-                            </InputSlot>
-                            <InputField
+                        <AuthInput height={48} isInvalid={!!errors.password}>
+                            <AuthInputField
                                 placeholder="••••••••"
                                 secureTextEntry={!showPass}
                                 onBlur={onBlur}
                                 onChangeText={onChange}
                                 value={value}
                             />
-                            <Button variant="ghost" onPress={() => setShowPass(!showPass)}>
-                                <ButtonIcon as={showPass ? Eye : EyeClosed} className="text-muted-foreground" />
-                            </Button>
-                        </Input>
+                            <Pressable
+                                onPress={() => setShowPass(!showPass)}
+                                hitSlop={12}
+                                accessibilityRole="button"
+                                accessibilityLabel={`${revealLabel(showPass)} password`}
+                            >
+                                <Text className="font-poppins-semibold text-[11px] text-primary">
+                                    {revealLabel(showPass)}
+                                </Text>
+                            </Pressable>
+                        </AuthInput>
                     )}
                 />
-                {passwordValue ? (
-                    <Box className="mt-1 gap-1">
-                        <Box className="w-full h-1 bg-secondary-foreground/20 rounded-full overflow-hidden">
-                            <View className={`h-full rounded-full ${strength.color} ${strength.width}`} />
-                        </Box>
-                        <Text size="xs" className="text-secondary-foreground/60 text-right">{strength.label}</Text>
-                    </Box>
-                ) : null}
-                <FormControlError>
-                    <FormControlErrorText>{errors.password?.message}</FormControlErrorText>
-                </FormControlError>
-            </FormControl>
+            </AuthField>
 
-            {/* Confirm Password */}
-            <FormControl isInvalid={!!errors.confirmPassword}>
-                <FormControlLabel>
-                    <FormControlLabelText className={errors.confirmPassword ? 'text-destructive' : 'text-secondary-foreground'}>
-                        Confirm Password
-                    </FormControlLabelText>
-                </FormControlLabel>
+            <AuthField label="Confirm password" error={errors.confirmPassword?.message}>
                 <Controller
                     name="confirmPassword"
                     control={control}
                     render={({ field: { onChange, onBlur, value } }) => (
-                        <Input className={`bg-secondary-foreground ${errors.confirmPassword ? 'border-2 border-destructive' : ''}`}>
-                            <InputSlot className="pl-3">
-                                <InputIcon as={Lock} className="text-muted-foreground" />
-                            </InputSlot>
-                            <InputField
+                        <AuthInput height={48} isInvalid={!!errors.confirmPassword}>
+                            <AuthInputField
                                 placeholder="••••••••"
                                 secureTextEntry={!showConfirm}
                                 onBlur={onBlur}
                                 onChangeText={onChange}
                                 value={value}
                             />
-                            <Button variant="ghost" onPress={() => setShowConfirm(!showConfirm)}>
-                                <ButtonIcon as={showConfirm ? Eye : EyeClosed} className="text-muted-foreground" />
-                            </Button>
-                        </Input>
+                            <Pressable
+                                onPress={() => setShowConfirm(!showConfirm)}
+                                hitSlop={12}
+                                accessibilityRole="button"
+                                accessibilityLabel={`${revealLabel(showConfirm)} confirmed password`}
+                            >
+                                <Text className="font-poppins-semibold text-[11px] text-primary">
+                                    {revealLabel(showConfirm)}
+                                </Text>
+                            </Pressable>
+                        </AuthInput>
                     )}
                 />
-                <FormControlError>
-                    <FormControlErrorText>{errors.confirmPassword?.message}</FormControlErrorText>
-                </FormControlError>
-            </FormControl>
+            </AuthField>
 
-            <Button className="w-full py-3 bg-primary" size="lg" onPress={handleNext}>
-                <ButtonText className="text-secondary-foreground text-lg">Next</ButtonText>
-            </Button>
+            <Box className="mt-2">
+                <AuthButton label="Next" onPress={handleNext} />
+            </Box>
 
-            <Box className="flex-row items-center justify-center gap-1">
-                <Text size="sm" className="text-secondary-foreground/60">Already have an account?</Text>
-                <Pressable onPress={() => router.push('/login')}>
-                    <Text size="sm" className="text-primary font-bold underline">Sign in</Text>
+            <Box className="flex-row items-center justify-center gap-1 pt-1">
+                <Text className="font-poppins text-[12.5px] text-muted-foreground">
+                    Already have an account?
+                </Text>
+                <Pressable onPress={() => router.push('/login')} hitSlop={8} accessibilityRole="button">
+                    <Text className="font-poppins-semibold text-[12.5px] text-primary">Sign in</Text>
                 </Pressable>
             </Box>
         </Box>

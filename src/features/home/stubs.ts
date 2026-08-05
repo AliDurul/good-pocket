@@ -12,7 +12,7 @@ import type { FlashSale, LastOrder, LoyaltySummary, StubResult } from './types';
 
 const LOYALTY: LoyaltySummary = {
   tier: 'BRONZE',
-  points: 180,
+  walletBalance: 180,
   nextTier: 'SILVER',
   pointsToNext: 320,
 };

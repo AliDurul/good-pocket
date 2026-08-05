@@ -33,3 +33,10 @@ export function useUser(id: string) {
         enabled: !!id,
     });
 }
+
+export function useMyCardInfo() {
+    return useQuery({
+        queryKey: [userKeys.details(), 'card-info'],
+        queryFn: () => apiFetch<IItemResponse<IUser>>('/users/my-card'),
+    });
+}
